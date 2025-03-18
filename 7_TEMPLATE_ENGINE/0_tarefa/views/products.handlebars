@@ -1,0 +1,17 @@
+<div class="products">
+    <h2>Aqui temos produtos de qualidade e de fácil acesso</h2>
+    
+    
+    {{#each products}}
+    <ul>
+        <li>
+            <h3>{{name}}</h3>
+            <p>{{describe}}</p>
+            <p>R$ {{price}},00</p>
+            <a href="/products/{{link}}">Clique para mais!</a>
+        </li>
+    </ul>
+    {{/each}}
+    
+    <a href="/">Voltar</a>
+</div>
