@@ -83,6 +83,24 @@ app.post("/users/update", async (req, res) => {
   res.redirect("/");
 });
 
+app.post('/address/create', async (req, res) => {
+  const UserId = req.body.UserId
+  const street = req.body.street
+  const number = req.body.number
+  const city = req.body.city
+
+  const address = {
+    UserId,
+    street,
+    number,
+    city
+  }
+
+ await Address.create(address)
+
+ res.redirect(`/users/edit/${UserId}`)
+})
+
 app.get("/", async (req, res) => {
   const users = await User.findAll({ raw: true });
 
@@ -92,8 +110,8 @@ app.get("/", async (req, res) => {
 });
 
 conn
- //.sync()
-  .sync({force: true}) // isso aqui não é recomendado em produção, pois ele vai apagar a tabela e criar novamente
+ .sync()
+  //.sync({force: true}) // isso aqui não é recomendado em produção, pois ele vai apagar a tabela e criar novamente
   .then(() => {
     app.listen(3000);
   })
