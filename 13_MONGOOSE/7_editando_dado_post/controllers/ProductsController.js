@@ -1,70 +1,70 @@
-const Product = require("../models/Products");
-const { ObjectId } = require("mongodb");
-const { isValidObjectId } = require('mongoose');
+const Product = require('./../models/Products')
 
-module.exports = class ProductController {
+module.exports = class ToughController {
+  static async showProducts(req, res) {
+    const products = await Product.find({}).lean()
 
-static async getProduct(req, res) {
-  const id = req.params.id;
-  if (!isValidObjectId(id)) {
-    return res.status(400).send("ID inválido");
+    console.log(products)
+
+    res.render('products/all', { products })
   }
-  const product = await Product.findById(id).lean();
-  res.render('products/product', { product });
-}
+
   static createProduct(req, res) {
-    res.render("products/create");
+    res.render('products/create')
   }
 
-  static async createProductPost(req, res) { 
-    const name = req.body.name;
-    const image = req.body.image;
-    const price = req.body.price;
-    const description = req.body.description;
+  static async createProductPost(req, res) {
+    const name = req.body.name
+    const price = req.body.price
+    const description = req.body.description
+    const image = req.body.image
 
-    const product = new Product({name, image, price, description});
-    await product.save();
+    const product = new Product({ name, price, description, image })
 
-    res.redirect("/products");
+    await product.save()
+
+    res.redirect('/products')
   }
 
   static async getProduct(req, res) {
-    const id = req.params.id;
-   
-    const product = await Product.findById(id).lean();
+    const id = req.params.id
 
-    res.render('products/product', { product });
+    const product = await Product.findById(id).lean()
+
+    //console.log(product)
+
+    res.render('products/product', { product })
   }
 
-  // static async removeProduct(req, res) {
-  //   const id = req.params.id;
-  //   if (!ObjectId.isValid(id)) {
-  //     return res.status(400).send("ID inválido");
-  //   }
-  //   await Product.removeProductById(id);
-  //   res.redirect('/products');
+  // static removeProduct(req, res) {
+  //   const id = req.params.id
+
+  //   Product.removeProduct(id)
+
+  //   res.redirect('/')
   // }
 
-  static async editProduct(req,res) {
-    const id = req.params.id;
+  static async editProduct(req, res) {
+    const id = req.params.id
 
-    const product = await Product.findById(id).lean();
+    const product = await Product.findById(id).lean()
 
-    res.render('products/edit', {product});
+    res.render('products/edit', { product })
   }
 
-  static async editProductPost(req,res){
-    const id = req.body.id;
-    const name = req.body.name;
-    const image = req.body.image;
-    const price = req.body.price;
-    const description = req.body.description;
+  static async editProductPost(req, res) {
+    const id = req.body.id
+    const name = req.body.name
+    const price = req.body.price
+    const description = req.body.description
+    const image = req.body.image
 
-    const product = {name,image,price,description};
+    console.log(req.body)
 
-    await Product.updateOne({_id: id}, product);
+    const product = { name, price, description, image }
+
+    await Product.updateOne({ _id: id }, product)
 
     res.redirect('/products')
-
   }
-};
+}
